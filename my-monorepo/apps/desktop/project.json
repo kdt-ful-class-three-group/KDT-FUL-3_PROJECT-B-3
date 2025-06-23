@@ -1,0 +1,18 @@
+{
+  "root": "apps/desktop",
+  "sourceRoot": "apps/desktop/src",
+  "projectType": "application",
+  "targets": {
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "ts-node apps/desktop/src/main.ts",
+        "cwd": "."
+      }
+    }
+  },
+  "desktop": {
+  "root": "apps/desktop"
+}
+
+}
