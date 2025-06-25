@@ -19,7 +19,7 @@ export interface BusRoute {
   startvehicletime: number; // 첫차 시간 (숫자 또는 문자열)
 }
 
-//! 버스 정류소 버스 정보
+//! 버스 도착 정보
 export interface BusArrivalInfo {
   arrprevstationcnt: number; // 이전 정류장 수
   arrtime: number; // 도착 시간 (초 단위)
@@ -30,6 +30,7 @@ export interface BusArrivalInfo {
   routetp: string; // 노선 타입
   vehicletp: string; // 차량 타입
 }
+
 //* api key
 const busKey =
   "%2F%2FyNWMYBpj%2BUWMNJOecVH1q6KYhP2UrjZA8nDYMreg0vjscQMgKCI8uqHwT9CLP1g5C5xVnHzwK7I9%2BxwO%2FqAA%3D%3D";
@@ -48,7 +49,7 @@ export async function getBus() {
 
 export async function getBusNodeCode() {
   //* 버스 routeid 데이터 , 버스 번호 데이터
-  const busNode = `https://apis.data.go.kr/1613000/BusRouteInfoInqireService/getRouteNoList?serviceKey=${busKey}&pageNo=1&numOfRows=10000&_type=json&cityCode=25`;
+  const busNode = `https://apis.data.go.kr/1613000/ArvlInfoInqireService/getSttnAcctoArvlPrearngeInfoList?serviceKey=${busKey}&pageNo=1&numOfRows=100&_type=json&cityCode=25&nodeId=DJB8001793`;
 
   try {
     const busNodeCode = await axios.get(busNode);
@@ -61,7 +62,7 @@ export async function getBusNodeCode() {
 }
 
 export async function getBusInfo() {
-  const busInfoApi = `https://apis.data.go.kr/1613000/ArvlInfoInqireService/getSttnAcctoArvlPrearngeInfoList?serviceKey=${busKey}&pageNo=1&numOfRows=300&_type=json&cityCode=25&nodeId=DJB8001028`;
+  const busInfoApi = `https://apis.data.go.kr/1613000/ArvlInfoInqireService/getSttnAcctoArvlPrearngeInfoList?serviceKey=${busKey}&pageNo=1&numOfRows=300&_type=json&cityCode=25&nodeId=DJB3014014`;
   try {
     const busInfoApiCode = await axios.get(busInfoApi);
     const busInfoData = await busInfoApiCode.data.response.body.items.item;
