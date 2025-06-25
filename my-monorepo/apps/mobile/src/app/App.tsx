@@ -15,14 +15,10 @@
 import React from 'react';
 import {View} from 'react-native';
 import {Src} from '@my-monorepo/src';
-
+import {KakaoMapWebView} from '../screens/KakaoMapWebView';
 
 export const App = () =>{
-  return(
-    <View>
-      <Src />
-    </View>
-  )
+  return <KakaoMapWebView />
 }
 
 // export const App = () => {

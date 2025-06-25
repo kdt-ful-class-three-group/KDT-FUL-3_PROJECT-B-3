@@ -2,6 +2,7 @@
 
 import React from 'react';
 import {Src} from '@my-monorepo/src';
+import { MapPage } from '../pages/MapPage';
 import { Route, Routes, Link } from 'react-router-dom';
 
 export function App() {
@@ -47,7 +48,7 @@ export function App() {
     //   {/* END: routes */}
     // </div>
   <div>
-    <Src />
+    <MapPage />
   </div>
   );
 }

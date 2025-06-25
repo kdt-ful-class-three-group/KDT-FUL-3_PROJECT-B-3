@@ -15,7 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@my-monorepo/src": ["libs/src/src/index.ts"]
+      "@my-monorepo/src": ["libs/src/src/index.ts"],
+      "@my-monorepo/webPage": ["apps/web/pages/MapPage.tsx"],
+      
     }
   },
   "exclude": ["node_modules", "tmp"]
