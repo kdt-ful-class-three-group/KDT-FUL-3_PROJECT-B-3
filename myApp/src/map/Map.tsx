@@ -1,8 +1,10 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import myMarkerImg from "../assets/react.svg";
-import { getBus } from "./busApi";
-import type { BusNode } from "./busApi";
+import { getBus, getBusNodeCode, getBusInfo } from "./busApi";
+
+import type { BusNode, BusRoute, BusArrivalInfo } from "./busApi";
 import { useEffect, useState } from "react";
 // import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
@@ -12,17 +14,45 @@ L.Icon.Default.mergeOptions({
   // shadowUrl: markerShadow,
 });
 function Map() {
-  const [busApiData, setBusApiData] = useState<BusNode[]>([]);
+  const [busApiData, setBusApiData] = useState<BusNode[]>([]); // 버스 정류소 위치 데이터
+  const [busCodeApiData, setBusCodeApiData] = useState<BusRoute[]>([]); // 버스 번호 코드 데이터
+  const [busInfoApiData, setBusInfoApiData] = useState<BusArrivalInfo[]>([]); // 버스 정보 데이터
   const myKey = "c8BF1UzHGMf4wHXXcPbo";
   const center: [number, number] = [36.35021741673337, 127.3853206539668];
   useEffect(() => {
     async function fetchBusData() {
-      const data = await getBus();
-      setBusApiData(data);
+      // 정류소 데이토
+      const busData = await getBus();
+      setBusApiData(busData);
+      //버스번호코드
+      const busNodeCodeData = await getBusNodeCode();
+      setBusCodeApiData(busNodeCodeData);
+      // 정류소 도착 버스 데이터
+      const busInfoData = await getBusInfo();
+      setBusInfoApiData(busInfoData);
     }
     fetchBusData();
-    console.log("버스api", busApiData);
   }, []);
+
+  // const mappedData = busApiData.map((busNode) => {
+  //   const relatedRoutes = busInfoApiData.filter(
+  //     (busInfo) => busInfo.nodeid === busNode.nodeid
+  //   );
+  //   return {
+  //     ...busNode,
+  //     routers: relatedRoutes,
+  //   };
+  // });
+  // console.log("버스 노선 맵핑 데이터", mappedData);
+  useEffect(() => {
+    console.log("버스api", busApiData);
+  }, [busApiData]);
+  useEffect(() => {
+    console.log("버스 번호 코드", busCodeApiData);
+  }, [busCodeApiData]);
+  useEffect(() => {
+    console.log("버스 노선 데이터", busInfoApiData);
+  }, [busInfoApiData]);
   return (
     <MapContainer
       center={center}
@@ -38,14 +68,16 @@ function Map() {
       {busApiData.length === 0 ? (
         <div className="loading">로딩 중...</div>
       ) : (
-        busApiData.map((busMarker, i) => (
-          <Marker
-            key={i}
-            position={[Number(busMarker.gpslati), Number(busMarker.gpslong)]}
-          >
-            <Popup>{busMarker.nodenm}</Popup>
-          </Marker>
-        ))
+        <MarkerClusterGroup>
+          {busApiData.map((busMarker, i) => (
+            <Marker
+              key={i}
+              position={[Number(busMarker.gpslati), Number(busMarker.gpslong)]}
+            >
+              <Popup>{busMarker.nodenm}</Popup>
+            </Marker>
+          ))}
+        </MarkerClusterGroup>
       )}
     </MapContainer>
   );
