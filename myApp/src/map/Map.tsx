@@ -73,6 +73,11 @@ function Map() {
             <Marker
               key={i}
               position={[Number(busMarker.gpslati), Number(busMarker.gpslong)]}
+              eventHandlers={{
+                click: async () => {
+                  console.log(busMarker.nodenm);
+                }
+              }}
             >
               <Popup>{busMarker.nodenm}</Popup>
             </Marker>
