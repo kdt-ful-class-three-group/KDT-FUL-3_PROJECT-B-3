@@ -17,6 +17,8 @@ function Map() {
   const [busApiData, setBusApiData] = useState<BusNode[]>([]); // 버스 정류소 위치 데이터
   const [busCodeApiData, setBusCodeApiData] = useState<BusRoute[]>([]); // 버스 번호 코드 데이터
   const [busInfoApiData, setBusInfoApiData] = useState<BusArrivalInfo[]>([]); // 버스 정보 데이터
+  const [isSelectedPopup , setIsSelectedPopup] = useState<boolean | null>(null);
+
   const myKey = "c8BF1UzHGMf4wHXXcPbo";
   const center: [number, number] = [36.35021741673337, 127.3853206539668];
   useEffect(() => {
@@ -76,14 +78,17 @@ function Map() {
               eventHandlers={{
                 click: async () => {
                   console.log(busMarker.nodenm);
+                  setIsSelectedPopup(true);
                 }
               }}
             >
               <Popup>
-                <div>
-                  <strong>{busMarker.nodenm}</strong>
-                  <div>정류소 ID: {busMarker.nodeid}</div>
-                </div>
+                {isSelectedPopup === true && (
+                  <div>
+                    <strong>{busMarker.nodenm}</strong>
+                    <div>정류소 ID: {busMarker.nodeid}</div>
+                  </div>
+                )}
               </Popup>
             </Marker>
           ))}
