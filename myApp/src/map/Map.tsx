@@ -79,7 +79,12 @@ function Map() {
                 }
               }}
             >
-              <Popup>{busMarker.nodenm}</Popup>
+              <Popup>
+                <div>
+                  <strong>{busMarker.nodenm}</strong>
+                  <div>정류소 ID: {busMarker.nodeid}</div>
+                </div>
+              </Popup>
             </Marker>
           ))}
         </MarkerClusterGroup>
