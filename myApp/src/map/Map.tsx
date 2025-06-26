@@ -17,7 +17,7 @@ function Map() {
   const [busApiData, setBusApiData] = useState<BusNode[]>([]); // 버스 정류소 위치 데이터
   const [busCodeApiData, setBusCodeApiData] = useState<BusRoute[]>([]); // 버스 번호 코드 데이터
   const [busInfoApiData, setBusInfoApiData] = useState<BusArrivalInfo[]>([]); // 버스 정보 데이터
-  const [isSelectedMarker , setIsSelectedMarker] = useState<string | null>(null);  // 마커 선택 여부 판단
+  const [selectedMarker , setSelectedMarker] = useState<string | null>(null);  // 마커 선택 여부 판단
 
   const myKey = "c8BF1UzHGMf4wHXXcPbo";
   const center: [number, number] = [36.35021741673337, 127.3853206539668];
@@ -77,20 +77,19 @@ function Map() {
               position={[Number(busMarker.gpslati), Number(busMarker.gpslong)]}
               eventHandlers={{
                 click: async () => {
-                  setIsSelectedMarker(null);
+                  setSelectedMarker(null);
                   const busInfo = await getBusRoutesByNode(busMarker.nodeid);
                   setBusCodeApiData(busInfo);
-                  setIsSelectedMarker(busMarker.nodeid);
+                  setSelectedMarker(busMarker.nodeid);
                 }
               }}
             >
               <Popup>
-                {isSelectedMarker === busMarker.nodeid && (
+                {selectedMarker === busMarker.nodeid && (
                   <div>
                     <strong>{busMarker.nodenm}</strong>
                       {busCodeApiData.map((route, idx) => (
                         <div key={idx} className="mb-3">
-                          <div>{busMarker.nodeid}</div>
                           <div>버스 번호: {route.routeno}</div>
                           <div>기점: {route.startnodenm}</div>
                           <div>종점: {route.endnodenm}</div>
