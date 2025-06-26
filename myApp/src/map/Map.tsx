@@ -34,6 +34,21 @@ function Map() {
     fetchBusData();
   }, []);
 
+
+
+const apiTest = [
+  {
+    nodeId : "1123"
+  },
+  {
+    nodeId : "12345"
+  }
+  ,{
+    nodeId : "456678"
+  }
+
+]
+
   // const mappedData = busApiData.map((busNode) => {
   //   const relatedRoutes = busInfoApiData.filter(
   //     (busInfo) => busInfo.nodeid === busNode.nodeid
@@ -73,8 +88,21 @@ function Map() {
             <Marker
               key={i}
               position={[Number(busMarker.gpslati), Number(busMarker.gpslong)]}
+              eventHandlers={{
+                click: () =>{
+                  console.log(busMarker.nodeid)
+                }
+              }
+              }
             >
-              <Popup>{busMarker.nodenm}</Popup>
+              <Popup>
+                <strong>{busMarker.nodenm}</strong>
+                {apiTest.map((test, i) => (
+                  <li key={i}>
+                    {test.nodeId}
+                  </li>
+                ))}
+              </Popup>
             </Marker>
           ))}
         </MarkerClusterGroup>
