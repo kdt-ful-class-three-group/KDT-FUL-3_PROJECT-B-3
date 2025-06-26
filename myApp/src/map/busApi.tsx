@@ -60,9 +60,9 @@ export async function getBusNodeCode() {
     console.error("버스 번호 코드 데이터 오류", error);
   }
 }
-
+//! 실시간 데이터
 export async function getBusInfo() {
-  const busInfoApi = `https://apis.data.go.kr/1613000/ArvlInfoInqireService/getSttnAcctoArvlPrearngeInfoList?serviceKey=${busKey}&pageNo=1&numOfRows=300&_type=json&cityCode=25&nodeId=DJB3014014`;
+  const busInfoApi = `https://apis.data.go.kr/1613000/ArvlInfoInqireService/getSttnAcctoArvlPrearngeInfoList?serviceKey=${busKey}&pageNo=1&numOfRows=300&_type=json&cityCode=25&nodeId=DJB8001793`;
   try {
     const busInfoApiCode = await axios.get(busInfoApi);
     const busInfoData = await busInfoApiCode.data.response.body.items.item;
