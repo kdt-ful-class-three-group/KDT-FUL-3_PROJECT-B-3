@@ -71,3 +71,14 @@ export async function getBusInfo() {
     console.log("버스 노선 정보 데이터 오류", error);
   }
 }
+
+export async function getBusRoutesByNode(nodeId: string) {
+  const url = `https://apis.data.go.kr/1613000/BusSttnInfoInqireService/getSttnThrghRouteList?serviceKey=${busKey}&pageNo=1&numOfRows=20&_type=json&cityCode=25&nodeid=${nodeId}`;
+  try {
+    const response = await axios.get(url);
+    const data = response.data.response.body.items.item;
+    return data;
+  } catch (error) {
+    console.error("정류소 경유 버스 정보 오류", error);
+  }
+}

@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import myMarkerImg from "../assets/react.svg";
-import { getBus, getBusNodeCode, getBusInfo } from "./busApi";
+import { getBus, getBusNodeCode, getBusInfo, getBusRoutesByNode } from "./busApi";
 
 import type { BusNode, BusRoute, BusArrivalInfo } from "./busApi";
 import { useEffect, useState } from "react";
@@ -27,8 +27,8 @@ function Map() {
       const busData = await getBus();
       setBusApiData(busData);
       //버스번호코드
-      const busNodeCodeData = await getBusNodeCode();
-      setBusCodeApiData(busNodeCodeData);
+      // const busNodeCodeData = await getBusNodeCode();
+      // setBusCodeApiData(busNodeCodeData);
       // 정류소 도착 버스 데이터
       const busInfoData = await getBusInfo();
       setBusInfoApiData(busInfoData);
@@ -49,9 +49,9 @@ function Map() {
   useEffect(() => {
     console.log("버스api", busApiData);
   }, [busApiData]);
-  useEffect(() => {
-    console.log("버스 번호 코드", busCodeApiData);
-  }, [busCodeApiData]);
+  // useEffect(() => {
+  //   console.log("버스 번호 코드", busCodeApiData);
+  // }, [busCodeApiData]);
   useEffect(() => {
     console.log("버스 노선 데이터", busInfoApiData);
   }, [busInfoApiData]);
@@ -77,7 +77,8 @@ function Map() {
               position={[Number(busMarker.gpslati), Number(busMarker.gpslong)]}
               eventHandlers={{
                 click: async () => {
-                  console.log(busMarker.nodenm);
+                  const busInfo = await getBusRoutesByNode(busMarker.nodeid);
+                  setBusCodeApiData(busInfo);
                   setIsSelectedMarker(true);
                 }
               }}
@@ -86,7 +87,13 @@ function Map() {
                 {isSelectedMarker === true && (
                   <div>
                     <strong>{busMarker.nodenm}</strong>
-                    <div>정류소 ID: {busMarker.nodeid}</div>
+                      {busCodeApiData.map((route, idx) => (
+                        <div key={idx} className="mb-3">
+                          <div>버스 번호: {route.routeno}</div>
+                          <div>기점: {route.startnodenm}</div>
+                          <div>종점: {route.endnodenm}</div>
+                        </div>
+                      ))}
                   </div>
                 )}
               </Popup>
