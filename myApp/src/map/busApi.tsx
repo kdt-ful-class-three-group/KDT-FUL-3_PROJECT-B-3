@@ -31,9 +31,6 @@ export interface BusArrivalInfo {
   vehicletp: string; // 차량 타입
 }
 
-//* api key
-const busKey =
-  "%2F%2FyNWMYBpj%2BUWMNJOecVH1q6KYhP2UrjZA8nDYMreg0vjscQMgKCI8uqHwT9CLP1g5C5xVnHzwK7I9%2BxwO%2FqAA%3D%3D";
 export async function getBusStationInfo() {
   try {
     const response = await axios.get("http://localhost:4000/api/busStationInfo");
@@ -42,31 +39,6 @@ export async function getBusStationInfo() {
     return busStationInfo;
   } catch (error) {
     console.error("버스 정류소 데이터 오류", error);
-  }
-}
-
-export async function getBusNodeCode() {
-  //* 버스 routeid 데이터 , 버스 번호 데이터
-  const busNode = `https://apis.data.go.kr/1613000/ArvlInfoInqireService/getSttnAcctoArvlPrearngeInfoList?serviceKey=${busKey}&pageNo=1&numOfRows=100&_type=json&cityCode=25&nodeId=DJB8001793`;
-
-  try {
-    const busNodeCode = await axios.get(busNode);
-    const busNodeData = await busNodeCode.data.response.body.items.item;
-    console.log("버스 번호 코드", busNodeData);
-    return busNodeData;
-  } catch (error) {
-    console.error("버스 번호 코드 데이터 오류", error);
-  }
-}
-
-export async function getBusInfo() {
-  const busInfoApi = `https://apis.data.go.kr/1613000/ArvlInfoInqireService/getSttnAcctoArvlPrearngeInfoList?serviceKey=${busKey}&pageNo=1&numOfRows=300&_type=json&cityCode=25&nodeId=DJB3014014`;
-  try {
-    const busInfoApiCode = await axios.get(busInfoApi);
-    const busInfoData = await busInfoApiCode.data.response.body.items.item;
-    return busInfoData;
-  } catch (error) {
-    console.log("버스 노선 정보 데이터 오류", error);
   }
 }
 
