@@ -47,9 +47,9 @@ export async function getBus() {
   }
 }
 
-export async function getBusNodeCode() {
+export async function getBusNodeCode(nodeid : string) {
   //* 버스 routeid 데이터 , 버스 번호 데이터
-  const busNode = `https://apis.data.go.kr/1613000/ArvlInfoInqireService/getSttnAcctoArvlPrearngeInfoList?serviceKey=${busKey}&pageNo=1&numOfRows=100&_type=json&cityCode=25&nodeId=DJB8001793`;
+  const busNode = `https://apis.data.go.kr/1613000/ArvlInfoInqireService/getSttnAcctoArvlPrearngeInfoList?serviceKey=${busKey}&pageNo=1&numOfRows=100&_type=json&cityCode=25&nodeId=${nodeid}`;
 
   try {
     const busNodeCode = await axios.get(busNode);

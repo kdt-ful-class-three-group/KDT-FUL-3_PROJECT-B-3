@@ -13,10 +13,12 @@ L.Icon.Default.mergeOptions({
   // iconRetinaUrl: myMarkerImg,
   // shadowUrl: markerShadow,
 });
+
 function Map() {
   const [busApiData, setBusApiData] = useState<BusNode[]>([]); // 버스 정류소 위치 데이터
   const [busCodeApiData, setBusCodeApiData] = useState<BusRoute[]>([]); // 버스 번호 코드 데이터
   const [busInfoApiData, setBusInfoApiData] = useState<BusArrivalInfo[]>([]); // 버스 정보 데이터
+  const [busNameInfo, setBusNameInfo] = useState<string>("");
   const myKey = "c8BF1UzHGMf4wHXXcPbo";
   const center: [number, number] = [36.35021741673337, 127.3853206539668];
   useEffect(() => {
@@ -25,8 +27,8 @@ function Map() {
       const busData = await getBus();
       setBusApiData(busData);
       //버스번호코드
-      const busNodeCodeData = await getBusNodeCode();
-      setBusCodeApiData(busNodeCodeData);
+      // const busNodeCodeData = await getBusNodeCode();
+      // setBusCodeApiData(busNodeCodeData);
       // 정류소 도착 버스 데이터
       const busInfoData = await getBusInfo();
       setBusInfoApiData(busInfoData);
@@ -34,20 +36,6 @@ function Map() {
     fetchBusData();
   }, []);
 
-
-
-const apiTest = [
-  {
-    nodeId : "1123"
-  },
-  {
-    nodeId : "12345"
-  }
-  ,{
-    nodeId : "456678"
-  }
-
-]
 
   // const mappedData = busApiData.map((busNode) => {
   //   const relatedRoutes = busInfoApiData.filter(
@@ -89,18 +77,22 @@ const apiTest = [
               key={i}
               position={[Number(busMarker.gpslati), Number(busMarker.gpslong)]}
               eventHandlers={{
-                click: () =>{
+                click: async () =>{
                   console.log(busMarker.nodeid)
+                  // 클릭을 하면 정류장에 맞는 노선번호를 가져옴
+                  const busNodeCode = await getBusNodeCode(busMarker.nodeid);
+                  setBusCodeApiData(busNodeCode)
+                  console.log(busCodeApiData)
                 }
-              }
-              }
+              }}
             >
               <Popup>
                 <strong>{busMarker.nodenm}</strong>
-                {apiTest.map((test, i) => (
-                  <li key={i}>
-                    {test.nodeId}
-                  </li>
+                {/* 버스 노선과 정류장 매핑 */}
+                {busCodeApiData.map((busRoute, index) => (
+                  <div key={index}>
+                    <p>노선 번호:{busRoute.routeno} 남은 시간: {busRoute.arrtime}</p>
+                  </div>
                 ))}
               </Popup>
             </Marker>
