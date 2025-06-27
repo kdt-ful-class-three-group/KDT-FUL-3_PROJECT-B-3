@@ -36,7 +36,7 @@ const busKey =
   "%2F%2FyNWMYBpj%2BUWMNJOecVH1q6KYhP2UrjZA8nDYMreg0vjscQMgKCI8uqHwT9CLP1g5C5xVnHzwK7I9%2BxwO%2FqAA%3D%3D";
 export async function getBusStationInfo() {
   try {
-    const response = await axios.get("http://localhost:4000/api/bus");
+    const response = await axios.get("http://localhost:4000/api/busStationInfo");
     const busStationInfo = response.data.response.body.items.item;
     console.log("버스 정류장 데이터:", busStationInfo);
     return busStationInfo;
