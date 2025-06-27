@@ -71,9 +71,8 @@ export async function getBusInfo() {
 }
 
 export async function getBusRoutesByNode(nodeId: string) {
-  const url = `https://apis.data.go.kr/1613000/BusSttnInfoInqireService/getSttnThrghRouteList?serviceKey=${busKey}&pageNo=1&numOfRows=20&_type=json&cityCode=25&nodeid=${nodeId}`;
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(`http://localhost:4000/api/busStationroutes/${nodeId}`);
     const data = response.data.response.body.items.item;
     return data;
   } catch (error) {

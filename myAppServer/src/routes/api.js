@@ -3,6 +3,6 @@ import { getBusStationInfo, getBusStationRoutes } from '../controllers/apiContro
 const router = express.Router();
 
 router.get('/busStationInfo', getBusStationInfo);
-router.get('/busStationRoutes/:nodeId', getBusStationRoutes);
+router.get('/busStationroutes/:nodeId', getBusStationRoutes);
 
 export default router;
