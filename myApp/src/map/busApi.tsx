@@ -34,14 +34,12 @@ export interface BusArrivalInfo {
 //* api key
 const busKey =
   "%2F%2FyNWMYBpj%2BUWMNJOecVH1q6KYhP2UrjZA8nDYMreg0vjscQMgKCI8uqHwT9CLP1g5C5xVnHzwK7I9%2BxwO%2FqAA%3D%3D";
-export async function getBus() {
-  //* 버스 정류소 위치 데이터
-  const bus = `https://apis.data.go.kr/1613000/BusSttnInfoInqireService/getSttnNoList?serviceKey=${busKey}&pageNo=1&numOfRows=3026&_type=json&cityCode=25`;
+export async function getBusStationInfo() {
   try {
-    const busApi = await axios.get(bus);
-    const busApiData = await busApi.data.response.body.items.item;
-    console.log("버스 정류장 데이터:", busApiData);
-    return busApiData;
+    const response = await axios.get("http://localhost:4000/api/bus");
+    const busStationInfo = response.data.response.body.items.item;
+    console.log("버스 정류장 데이터:", busStationInfo);
+    return busStationInfo;
   } catch (error) {
     console.error("버스 정류소 데이터 오류", error);
   }

@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import myMarkerImg from "../assets/react.svg";
-import { getBus, getBusNodeCode, getBusInfo, getBusRoutesByNode } from "./busApi";
+import { getBusStationInfo, getBusNodeCode, getBusInfo, getBusRoutesByNode } from "./busApi";
 
 import type { BusNode, BusRoute, BusArrivalInfo } from "./busApi";
 import { useEffect, useState } from "react";
@@ -14,7 +14,7 @@ L.Icon.Default.mergeOptions({
   // shadowUrl: markerShadow,
 });
 function Map() {
-  const [busApiData, setBusApiData] = useState<BusNode[]>([]); // 버스 정류소 위치 데이터
+  const [busStationInfo, setBusStationInfo] = useState<BusNode[]>([]); // 버스 정류소 위치 데이터
   const [busCodeApiData, setBusCodeApiData] = useState<BusRoute[]>([]); // 버스 번호 코드 데이터
   const [busInfoApiData, setBusInfoApiData] = useState<BusArrivalInfo[]>([]); // 버스 정보 데이터
   const [selectedMarker , setSelectedMarker] = useState<string | null>(null);  // 마커 선택 여부 판단
@@ -22,10 +22,10 @@ function Map() {
   const myKey = "c8BF1UzHGMf4wHXXcPbo";
   const center: [number, number] = [36.35021741673337, 127.3853206539668];
   useEffect(() => {
-    async function fetchBusData() {
+    async function fetchBusStationInfo() {
       // 정류소 데이토
-      const busData = await getBus();
-      setBusApiData(busData);
+      const busData = await getBusStationInfo();
+      setBusStationInfo(busData);
       //버스번호코드
       // const busNodeCodeData = await getBusNodeCode();
       // setBusCodeApiData(busNodeCodeData);
@@ -33,7 +33,7 @@ function Map() {
       const busInfoData = await getBusInfo();
       setBusInfoApiData(busInfoData);
     }
-    fetchBusData();
+    fetchBusStationInfo();
   }, []);
 
   // const mappedData = busApiData.map((busNode) => {
@@ -46,9 +46,6 @@ function Map() {
   //   };
   // });
   // console.log("버스 노선 맵핑 데이터", mappedData);
-  useEffect(() => {
-    console.log("버스api", busApiData);
-  }, [busApiData]);
   // useEffect(() => {
   //   console.log("버스 번호 코드", busCodeApiData);
   // }, [busCodeApiData]);
@@ -67,11 +64,11 @@ function Map() {
         zoomOffset={-1}
         attribution='&copy; <a href="https://www.maptiler.com/">MapTiler</a> & OpenStreetMap contributors'
       />
-      {busApiData.length === 0 ? (
+      {busStationInfo.length === 0 ? (
         <div className="loading">로딩 중...</div>
       ) : (
         <MarkerClusterGroup>
-          {busApiData.map((busMarker, i) => (
+          {busStationInfo.map((busMarker, i) => (
             <Marker
               key={i}
               position={[Number(busMarker.gpslati), Number(busMarker.gpslong)]}
