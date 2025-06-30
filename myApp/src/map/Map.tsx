@@ -2,9 +2,13 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import myMarkerImg from "../assets/react.svg";
-import { getBusStationInfo, getBusRoutesByNode } from "./busApi";
+import {
+  getBusStationInfo,
+  getBusRoutesByNode,
+  getArvlInfoNode,
+} from "./busApi";
 
-import type { BusNode, BusRoute } from "./busApi";
+import type { BusNode, BusRoute, BusArrivalInfo } from "./busApi";
 import { useEffect, useState } from "react";
 // import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
@@ -16,16 +20,36 @@ L.Icon.Default.mergeOptions({
 function Map() {
   const [busStationInfo, setBusStationInfo] = useState<BusNode[]>([]); // 버스 정류소 위치 데이터
   const [busCodeApiData, setBusCodeApiData] = useState<BusRoute[]>([]); // 버스 번호 코드 데이터
-  const [selectedMarker, setSelectedMarker] = useState<string | null>(null);  // 마커 선택 여부 판단
+  const [selectedMarker, setSelectedMarker] = useState<string | null>(null); // 마커 선택 여부 판단
+  const [selectedInfoMarker, setSelectedInfoMarker] = useState<
+    BusArrivalInfo[]
+  >([]); // 마커 선택 여부 판단
 
   const myKey = "c8BF1UzHGMf4wHXXcPbo";
   const center: [number, number] = [36.35021741673337, 127.3853206539668];
-
+  //* 버스시간, 버스 기점,종점 맵핑
+  const mergeObjBus = [...busCodeApiData, ...selectedInfoMarker].reduce(
+    (element: (BusRoute | BusArrivalInfo)[], cur) => {
+      const existing = element.find((item) => item.routeid === cur.routeid);
+      if (existing) {
+        Object.assign(existing, cur);
+      } else {
+        element.push(cur);
+      }
+      return element;
+    },
+    []
+  );
+  console.log("버스 시간 맵핑", mergeObjBus);
   useEffect(() => {
     async function fetchBusStationInfo() {
       // 정류소 정보
       const busData = await getBusStationInfo();
       setBusStationInfo(busData);
+
+      // const busInfoData = await getArvlInfoNode();
+      // setSelectedInfoMarker(busInfoData);
+      // console.log(busInfoData);
     }
     fetchBusStationInfo();
   }, []);
@@ -54,20 +78,37 @@ function Map() {
                 click: async () => {
                   setSelectedMarker(null);
                   const busInfo = await getBusRoutesByNode(busMarker.nodeid);
+                  const busTime = await getArvlInfoNode(busMarker.nodeid);
                   setBusCodeApiData(busInfo);
+                  setSelectedInfoMarker(busTime);
                   setSelectedMarker(busMarker.nodeid);
-                }
+                },
               }}
             >
               <Popup>
                 {selectedMarker === busMarker.nodeid && (
                   <div>
                     <strong>{busMarker.nodenm}</strong>
-                    {busCodeApiData.map((route, idx) => (
+                    {mergeObjBus.map((route, idx) => (
                       <div key={idx} className="mb-3">
-                        <div>버스 번호: {route.routeno}</div>
-                        <div>기점: {route.startnodenm}</div>
-                        <div>종점: {route.endnodenm}</div>
+                        <div className="flex  items-end my-3">
+                          <span className="m-0 text-lg block font-medium">
+                            {route.routeno}
+                          </span>
+                          <span className="ml-1 text-sm block text-gray-500">
+                            {route.endnodenm} 방향
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center my-3">
+                          <span>
+                            {route.arrtime
+                              ? Math.floor(route.arrtime / 60) + "분"
+                              : "도착정보없음"}
+                          </span>
+
+                          <span>{route.arrprevstationcnt} 정거장 전</span>
+                        </div>
+                        <div></div>
                       </div>
                     ))}
                   </div>

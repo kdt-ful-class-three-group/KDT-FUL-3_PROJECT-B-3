@@ -33,7 +33,9 @@ export interface BusArrivalInfo {
 
 export async function getBusStationInfo() {
   try {
-    const response = await axios.get("http://localhost:4000/api/busStationInfo");
+    const response = await axios.get(
+      "http://localhost:4000/api/busStationInfo"
+    );
     const busStationInfo = response.data.response.body.items.item;
     console.log("버스 정류장 데이터:", busStationInfo);
     return busStationInfo;
@@ -44,9 +46,26 @@ export async function getBusStationInfo() {
 
 export async function getBusRoutesByNode(nodeId: string) {
   try {
-    const response = await axios.get(`http://localhost:4000/api/busStationroutes/${nodeId}`);
+    const response = await axios.get(
+      `http://localhost:4000/api/busStationroutes/${nodeId}`
+    );
     const data = response.data.response.body.items.item;
+    console.log("정류소 경유 버스 정보:", data);
     return data;
+  } catch (error) {
+    console.error("정류소 경유 버스 정보 오류", error);
+  }
+}
+
+export async function getArvlInfoNode(nodeId: string) {
+  try {
+    const arvlInfoResponse = await axios.get(
+      `http://localhost:4000/api/ArvlInfoInqireService/${nodeId}`
+    );
+    console.log("버스 시간 api 응답", arvlInfoResponse);
+    const arvlInfoData = arvlInfoResponse.data.response.body.items.item;
+    console.log("정류소 시간 버스 정보:", arvlInfoData);
+    return arvlInfoData;
   } catch (error) {
     console.error("정류소 경유 버스 정보 오류", error);
   }
