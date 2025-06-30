@@ -79,7 +79,7 @@ function Map() {
                   setSelectedMarker(null);
                   const busInfo = await getBusRoutesByNode(busMarker.nodeid);
                   const busTime = await getArvlInfoNode(busMarker.nodeid);
-                  setBusCodeApiData(busInfo);
+                  setBusCodeApiData(Array.istArray(busInfo) ? busInfo : []);
                   setSelectedInfoMarker(busTime);
                   setSelectedMarker(busMarker.nodeid);
                 },
@@ -93,7 +93,7 @@ function Map() {
                       <div key={idx} className="mb-3">
                         <div className="flex  items-end my-3">
                           <span className="m-0 text-lg block font-medium">
-                            {route.routeno}
+                            {route.routeno}번
                           </span>
                           <span className="ml-1 text-sm block text-gray-500">
                             {route.endnodenm} 방향
