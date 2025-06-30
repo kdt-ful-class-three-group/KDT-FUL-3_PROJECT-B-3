@@ -79,8 +79,8 @@ function Map() {
                   setSelectedMarker(null);
                   const busInfo = await getBusRoutesByNode(busMarker.nodeid);
                   const busTime = await getArvlInfoNode(busMarker.nodeid);
-                  setBusCodeApiData(busInfo);
-                  setSelectedInfoMarker(busTime);
+                  setBusCodeApiData(Array.isArray(busInfo) ? busInfo : []);
+                  setSelectedInfoMarker(Array.isArray(busTime) ? busTime : []);
                   setSelectedMarker(busMarker.nodeid);
                 },
               }}
@@ -88,29 +88,43 @@ function Map() {
               <Popup>
                 {selectedMarker === busMarker.nodeid && (
                   <div>
-                    <strong>{busMarker.nodenm}</strong>
-                    {mergeObjBus.map((route, idx) => (
-                      <div key={idx} className="mb-3">
-                        <div className="flex  items-end my-3">
-                          <span className="m-0 text-lg block font-medium">
-                            {route.routeno}
-                          </span>
-                          <span className="ml-1 text-sm block text-gray-500">
-                            {route.endnodenm} 방향
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center my-3">
-                          <span>
-                            {route.arrtime
-                              ? Math.floor(route.arrtime / 60) + "분"
-                              : "도착정보없음"}
-                          </span>
+                    <h2 className="text-xl">{busMarker.nodenm}</h2>
+                    <div className="overflow-y-auto max-h-[33vh] scrollbar-hide">
+                      {mergeObjBus.map((route, idx) => (
+                        <div key={idx} className="mb-3">
+                          <div className="flex  items-end my-3">
+                            <span className="m-0 text-lg block font-medium">
+                              {route.routeno}
+                            </span>
+                            <span className="ml-1 text-sm block text-gray-500">
+                              {route.endnodenm} 방향
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center my-3">
+                            <span
+                              className={
+                                "text-medium" +
+                                (route.arrtime &&
+                                Math.floor(route.arrtime / 60) < 3
+                                  ? " text-red-500"
+                                  : " text-black")
+                              }
+                            >
+                              {route.arrtime
+                                ? Math.floor(route.arrtime / 60) + "분"
+                                : "도착정보없음"}
+                            </span>
 
-                          <span>{route.arrprevstationcnt} 정거장 전</span>
+                            <span>
+                              {route.arrprevstationcnt
+                                ? route.arrprevstationcnt + "정거장 전"
+                                : ""}{" "}
+                            </span>
+                          </div>
+                          <div></div>
                         </div>
-                        <div></div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 )}
               </Popup>
