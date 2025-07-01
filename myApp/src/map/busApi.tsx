@@ -2,6 +2,11 @@ import axios from "axios";
 
 //! 버스 정류소 위치
 export interface BusNode {
+  _id: number;
+  apiId: string;
+  __v: number;
+  createdAt: string;
+  updatedAt: string;
   gpslati: number; // 위도
   gpslong: number; // 경도
   nodeid: string; // 노드 ID
@@ -33,12 +38,9 @@ export interface BusArrivalInfo {
 
 export async function getBusStationInfo() {
   try {
-    const response = await axios.get(
-      "http://localhost:4000/api/busStationInfo"
-    );
-    const busStationInfo = response.data.response.body.items.item;
-    console.log("버스 정류장 데이터:", busStationInfo);
-    return busStationInfo;
+    const response = await axios.get("http://localhost:4000/api/busApi");
+    console.log("버스 정류장 데이터:", response.data.data);
+    return response.data.data;
   } catch (error) {
     console.error("버스 정류소 데이터 오류", error);
   }
@@ -62,7 +64,7 @@ export async function getArvlInfoNode(nodeId: string) {
     const arvlInfoResponse = await axios.get(
       `http://localhost:4000/api/ArvlInfoInqireService/${nodeId}`
     );
-    console.log("버스 시간 api 응답", arvlInfoResponse);
+    // console.log("버스 시간 api 응답", arvlInfoResponse);
     const arvlInfoData = arvlInfoResponse.data.response.body.items.item;
     console.log("정류소 시간 버스 정보:", arvlInfoData);
     return arvlInfoData;
