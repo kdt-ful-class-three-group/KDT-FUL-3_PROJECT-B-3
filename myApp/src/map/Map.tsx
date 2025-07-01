@@ -41,6 +41,8 @@ function Map() {
     []
   );
   console.log("버스 시간 맵핑", mergeObjBus);
+
+
   useEffect(() => {
     async function fetchBusStationInfo() {
       // 정류소 정보
@@ -85,7 +87,7 @@ function Map() {
                 },
               }}
             >
-              <Popup>
+              {/* <Popup>
                 {selectedMarker === busMarker.nodeid && (
                   <div>
                     <h2 className="text-xl">{busMarker.nodenm}</h2>
@@ -127,7 +129,7 @@ function Map() {
                     </div>
                   </div>
                 )}
-              </Popup>
+              </Popup> */}
             </Marker>
           ))}
         </MarkerClusterGroup>

@@ -36,7 +36,10 @@ export async function getBusStationInfo() {
     const response = await axios.get(
       "http://localhost:4000/api/busStationInfo"
     );
-    const busStationInfo = response.data.response.body.items.item;
+    // DB에서 오면 배열, API에서 오면 배열
+    const busStationInfo = Array.isArray(response.data)
+      ? response.data
+      : response.data.response?.body?.items?.item || [];
     console.log("버스 정류장 데이터:", busStationInfo);
     return busStationInfo;
   } catch (error) {

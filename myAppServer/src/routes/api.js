@@ -1,12 +1,12 @@
 import express from "express";
 import {
-  getBusStationInfo,
+  getOrCacheBusStations,
   getBusStationRoutes,
   getArvlInfoInqireService,
 } from "../controllers/apiController.js";
 const router = express.Router();
 
-router.get("/busStationInfo", getBusStationInfo);
+router.get("/busStationInfo", getOrCacheBusStations);
 router.get("/busStationroutes/:nodeId", getBusStationRoutes);
 router.get("/ArvlInfoInqireService/:nodeId", getArvlInfoInqireService);
 
