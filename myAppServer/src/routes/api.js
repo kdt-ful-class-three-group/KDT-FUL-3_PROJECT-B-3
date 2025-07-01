@@ -3,8 +3,6 @@ import {
   getBusStationInfo,
   getBusStationRoutes,
   getArvlInfoInqireService,
-  testDbConnection,
-  insertAllBusStations
 } from "../controllers/apiController.js";
 const router = express.Router();
 
