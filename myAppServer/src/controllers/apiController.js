@@ -42,29 +42,29 @@ export async function getArvlInfoInqireService(req, res) {
   }
 }
 
-export async function testDbConnection(req, res) {
-  try {
-    const station = await busStation.findOne();
-    res.json({ success: true, station });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-}
+// export async function testDbConnection(req, res) {
+//   try {
+//     const station = await busStation.findOne();
+//     res.json({ success: true, station });
+//   } catch (err) {
+//     res.status(500).json({ success: false, error: err.message });
+//   }
+// }
 
-export async function insertAllBusStations(req, res) {
-  try {
-    const data = await fetchBusStationInfo();
-    const stations = data.response.body.items.item;
-    let inserted = 0;
-    for (const station of stations) {
-      const exists = await busStation.findOne({ nodeid: station.nodeid });
-      if (!exists) {
-        await busStation.create(station);
-        inserted++;
-      }
-    }
-    res.json({ success: true, inserted });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-}
+// export async function insertAllBusStations(req, res) {
+//   try {
+//     const data = await fetchBusStationInfo();
+//     const stations = data.response.body.items.item;
+//     let inserted = 0;
+//     for (const station of stations) {
+//       const exists = await busStation.findOne({ nodeid: station.nodeid });
+//       if (!exists) {
+//         await busStation.create(station);
+//         inserted++;
+//       }
+//     }
+//     res.json({ success: true, inserted });
+//   } catch (err) {
+//     res.status(500).json({ success: false, error: err.message });
+//   }
+// }
