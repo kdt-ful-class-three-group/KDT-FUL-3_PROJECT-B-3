@@ -5,8 +5,17 @@ import { fetchArvlInfoInqireService } from "../services/externalApi.js";
 
 export async function getBusStationInfo(req, res) {
   try {
-    const data = await fetchBusStationInfo();
-    res.json(data);
+    const stations = await busStation.find({});
+    if (stations && stations.length > 0) {
+      return res.json({ from: "db", data: stations });
+    }
+
+    const apiData = await fetchBusStationInfo();
+    const items = apiData.response.body.items.item;
+
+    await busStation.insertMany(items, { ordered: false });
+
+    res.json({ from: "api", data: items });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

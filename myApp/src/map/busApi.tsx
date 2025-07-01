@@ -36,7 +36,7 @@ export async function getBusStationInfo() {
     const response = await axios.get(
       "http://localhost:4000/api/busStationInfo"
     );
-    const busStationInfo = response.data.response.body.items.item;
+    const busStationInfo = response.data.data;
     console.log("버스 정류장 데이터:", busStationInfo);
     return busStationInfo;
   } catch (error) {
