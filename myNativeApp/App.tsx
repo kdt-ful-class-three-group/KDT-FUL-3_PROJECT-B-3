@@ -3,9 +3,14 @@ import { StyleSheet, View } from 'react-native';
 import * as MapLibreGL from '@maplibre/maplibre-react-native';
 
 export default function App() {
+  const myKey = "c8BF1UzHGMf4wHXXcPbo";
+
   return (
     <View style={styles.container}>
-      <MapLibreGL.MapView style={styles.map}>
+      <MapLibreGL.MapView
+        style={styles.map}
+        mapStyle={`https://api.maptiler.com/maps/streets/style.json?key=${myKey}`}
+      >
         <MapLibreGL.Camera
           zoomLevel={13}
           centerCoordinate={[127.3853206539668, 36.35021741673337]}
