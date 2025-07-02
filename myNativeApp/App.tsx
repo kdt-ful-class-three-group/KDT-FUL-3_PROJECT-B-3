@@ -44,6 +44,9 @@ export default function App() {
             key={idx}
             id={station.nodeid?.toString() || idx.toString()}
             coordinate={[Number(station.gpslong), Number(station.gpslati)]}
+            onSelected={() => {
+              console.log(`정류장: ${station.nodenm}`);
+            }}
           >
             <View style={{ width: 20, height: 20, backgroundColor: 'blue', borderRadius: 10, borderWidth: 2, borderColor: 'white' }} />
           </MapLibreGL.PointAnnotation>
