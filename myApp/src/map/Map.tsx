@@ -87,7 +87,7 @@ function Map() {
                 },
               }}
             >
-              {/* <Popup>
+              <Popup>
                 {selectedMarker === busMarker.nodeid && (
                   <div>
                     <h2 className="text-xl">{busMarker.nodenm}</h2>
@@ -129,7 +129,7 @@ function Map() {
                     </div>
                   </div>
                 )}
-              </Popup> */}
+              </Popup>
             </Marker>
           ))}
         </MarkerClusterGroup>
